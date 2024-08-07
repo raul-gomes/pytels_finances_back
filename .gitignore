@@ -156,6 +156,7 @@ cython_debug/
 
 # Database
 database.db
+database1.db
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

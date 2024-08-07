@@ -1,18 +1,29 @@
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
+class DescribeSchema(BaseModel):
+    describe: str
 
-class IncomeSchema(BaseModel):
+class IncomeInputSchema(BaseModel):
     date: datetime
     amount: float
     describe: str
+    isNewDescribe: bool
+    newDescribe: str
 
-
-class IncomePublic(BaseModel):
-    date: datetime
+class IncomeOutputSchema(BaseModel):
+    date: str
     amount: float
     describe: str
     model_config = ConfigDict(from_attributes=True)
 
-class IncomeList(BaseModel):
-    incomes: list[IncomePublic]
+class IncomeResponseSchema(BaseModel):
+    incomes: list[IncomeOutputSchema]
+
+class NewIncomeResponseSchema(BaseModel):
+    incomes: IncomeOutputSchema
+
+class DescribesResponseSchema(BaseModel):
+    describes: list[str]
+    

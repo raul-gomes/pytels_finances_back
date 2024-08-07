@@ -1,6 +1,7 @@
 from datetime import datetime
-from sqlalchemy import func
-from sqlalchemy.orm import Mapped, mapped_column, registry
+from typing import List
+from sqlalchemy import func, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, registry, relationship
 table_registry = registry()
 
 @table_registry.mapped_as_dataclass
@@ -10,7 +11,17 @@ class IncomeModel:
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     date: Mapped[datetime]
     amount: Mapped[float]
-    describe: Mapped[str]
+    describe = relationship('DescribeModel', back_populates='income')
+    describe_id: Mapped[int] = mapped_column(ForeignKey('describes.id'), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         init=False, server_default=func.now()
     )
+
+@table_registry.mapped_as_dataclass
+class DescribeModel:
+    __tablename__ = 'describes'
+
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    describe: Mapped[str]
+    income = relationship('IncomeModel', back_populates='describe')
+
