@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pytels_finances.database import get_session
 from pytels_finances.models.models import DescribeModel, IncomeModel
 from pytels_finances.schemas.income_schema import DescribesResponseSchema, IncomeResponseSchema, IncomeOutputSchema, IncomeInputSchema, NewIncomeResponseSchema
+from pytels_finances.schemas.outcome_schema import OutcomeRequestSquema, OutcomeResponseSquema, OutcomeSquema
 
 
 app = FastAPI()
@@ -83,3 +84,16 @@ def get_describe(session: Session = Depends(get_session)):
     smtm = select(DescribeModel)
     describes = [describe.describe for describe in session.execute(smtm).scalars().all()]
     return {'describes': describes}
+
+@app.post('/newOutcome', status_code=HTTPStatus.CREATED, response_model=OutcomeResponseSquema)
+def new_outcome(outcome: OutcomeRequestSquema, session: Session = Depends(get_session)):
+    print(outcome)
+    
+    db_outcome = OutcomeSquema(
+        amount = 12345,
+        cardType = 'debito',
+        date = '2024-08-01',
+        describe = 'testando 1',
+        outcomeType = 'testando 2',
+    )
+    return {'outcome': outcome}

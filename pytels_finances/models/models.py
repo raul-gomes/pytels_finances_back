@@ -25,3 +25,25 @@ class DescribeModel:
     describe: Mapped[str]
     income = relationship('IncomeModel', back_populates='describe')
 
+
+@table_registry.mapped_as_dataclass
+class OutcomeModel:
+    __tablename__: 'outcomes'
+
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    date: Mapped[datetime]
+    amount: Mapped[float]
+    cardtype: Mapped[str]
+    installments: Mapped[int]
+    recurrency: Mapped[bool]
+    create_at: Mapped[datetime] = mapped_column(
+        init=False, server_default=func.now()
+    )
+
+@table_registry.mapped_as_dataclass
+class DescribeOutcome:
+    ...
+
+@table_registry.mapped_as_dataclass
+class OutcomeType:
+    ...
